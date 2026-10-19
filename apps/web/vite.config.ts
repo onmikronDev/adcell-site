@@ -10,6 +10,7 @@ import inlineEditPlugin from './plugins/visual-editor/vite-plugin-react-inline-e
 import devHeadersPlugin from './plugins/vite-plugin-dev-headers.js';
 import horizonsLoggerPlugin from './plugins/vite-plugin-horizons-logger.js';
 import iframeRouteRestorationPlugin from './plugins/vite-plugin-iframe-route-restoration.js';
+import sessionJournalPlugin from './plugins/session-journal/vite-plugin-session-journal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '../..');
