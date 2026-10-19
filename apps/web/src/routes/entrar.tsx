@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useFetcher } from 'react-router';
 import type { Route } from './+types/entrar';
 import { seo } from '@/lib/seo';
