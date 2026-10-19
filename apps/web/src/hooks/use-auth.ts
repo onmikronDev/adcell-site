@@ -1,51 +1,28 @@
-import { useEffect, useMemo, useState } from 'react';
-import pb from '@/lib/pocketbase-client';
+import { useMemo } from 'react';
 
 /**
- * Session state for the signed-in PocketBase user: user, isAuthed, isLoading,
- * login, signup, logout. No provider to mount — every caller reads the same
- * `pb.authStore`.
- *
- * The JWT is persisted in localStorage, which the server cannot read, so the
- * session is filled in after hydration. Render on `isLoading` (a spinner, a
- * skeleton) instead of the signed-out state, or a signed-in visitor sees a
- * "Sign in" button flash on every page load.
+ * Session hook sem PocketBase.
+ * O login da equipe é feito pela action da rota /entrar (MySQL).
  */
 export function useAuth() {
-	const [user, setUser] = useState<typeof pb.authStore.record>(null);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		setUser(pb.authStore.record);
-		setIsLoading(false);
-
-		return pb.authStore.onChange((_token, record) => setUser(record));
-	}, []);
-
 	return useMemo(
 		() => ({
-			user,
-			isAuthed: Boolean(user),
-			isLoading,
-			login: (email: string, password: string) =>
-				pb.collection('users').authWithPassword(email, password),
-			signup: async (
-				email: string,
-				password: string,
-				extraFields: Record<string, unknown> = {},
-			) => {
-				await pb.collection('users').create({
-					email,
-					password,
-					passwordConfirm: password,
-					...extraFields,
-				});
-
-				return pb.collection('users').authWithPassword(email, password);
+			user: null as null,
+			isAuthed: false,
+			isLoading: false,
+			login: async (_email: string, _password: string) => {
+				throw new Error('Use o formulário em /entrar.');
 			},
-			logout: () => pb.authStore.clear(),
+			signup: async (
+				_email: string,
+				_password: string,
+				_extraFields: Record<string, unknown> = {},
+			) => {
+				throw new Error('Cadastro indisponível.');
+			},
+			logout: () => {},
 		}),
-		[user, isLoading],
+		[],
 	);
 }
 
