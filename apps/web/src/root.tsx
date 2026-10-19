@@ -9,6 +9,7 @@ import {
 } from 'react-router';
 import type { Route } from './+types/root';
 import stylesheet from '@/index.css?url';
+import themeDark from '@/theme-dark.css?url';
 import { siteOrigin } from '@/lib/site-origin.server';
 import { HorizonsPreviewScripts } from './horizons-preview-scripts';
 import { CartProvider } from '@/components/cart-provider';
@@ -18,6 +19,7 @@ import { WhatsappFloat } from '@/components/whatsapp-float';
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'stylesheet', href: stylesheet },
+	{ rel: 'stylesheet', href: themeDark },
 	{ rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
 	{

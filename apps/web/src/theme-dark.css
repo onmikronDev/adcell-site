@@ -1,0 +1,25 @@
+/* Tema escuro verde */
+:root { --green: #34c26f; --lime: #7ed321; --ink: #eaf3ec; --soft: #10261a; --grey: #a9bbad; --line: #21412f; --bg-dark: #07140d; --bg-card: #0d2016; }
+html, body { background: var(--bg-dark); color: var(--ink); }
+body { background: radial-gradient(1200px 600px at 80% -10%, #0f3a24 0%, transparent 60%), var(--bg-dark); }
+.section h1, .section h2, .product-info h1 { color: var(--ink); }
+.eyebrow { color: var(--lime); }
+.hero { background: #0b2418; }
+.button, .cart-count, .status-pill, .category-chips .selected, .time-slots .selected { color: #04130a; }
+.button:hover { background: #5ad98f; }
+.button-red, .product-badge { color: #fff; }
+.site-footer { background: #050e09; border-top: 1px solid var(--line); }
+.store-story, .graphic-label { background: var(--bg-card); }
+.graphic-orbit { border-color: var(--line); }
+.phone-outline { background: #0b2418; box-shadow: 15px 18px 0 #050e09; }
+.category-index { background: #07140dcc; color: var(--ink); }
+.round-arrow { background: var(--bg-card); color: var(--lime); }
+select, .search-field, .field input, .field textarea, .field select, .category-chips a, .time-slots button, .quantity-control button, .quantity-control { background: var(--bg-card); color: var(--ink); border-color: var(--line); }
+.search-field input { background: transparent; color: var(--ink); }
+.mobile-nav { background: #0b0b0b; color: white; }
+.low-stock { background: #2a1512; }
+.empty-state, .cart-summary, .contact-note, .notice, .review-grid blockquote, .stat-grid div { background: var(--bg-card); }
+.cart-item img, .gallery-main, .product-image, .category-image { background: var(--bg-card); }
+.text-link:hover { color: var(--lime); }
+.form-message a, .detail-price, .product-price, .stat-grid strong { color: var(--lime); }
+.value-strip svg, .product-care svg, .contact-note > svg, .result-icon { color: var(--lime); }
