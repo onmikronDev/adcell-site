@@ -12,6 +12,8 @@ export function categoryName(product: PublicProduct) {
 }
 
 function photoUrl(product: PublicProduct) {
+  const file = (product as unknown as { photo_file?: string }).photo_file;
+  if (file) return `${pb.baseUrl}/api/files/inventory_products/${product.id}/${file}`;
   if (!product.photo) return '';
   if (product.photo.startsWith('http')) return product.photo;
   return `${pb.baseUrl}/api/files/inventory_products/${product.id}/${product.photo}`;
