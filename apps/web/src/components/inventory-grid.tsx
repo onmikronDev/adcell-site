@@ -1,9 +1,10 @@
 import { Link } from 'react-router';
 import { money } from '@/data/brand';
 import { useCart } from '@/components/cart-provider';
-import pb from '@/lib/pocketbase-client';
 import type { Product, ProductVariant } from '@/api/ecommerce-api';
 import type { PublicProduct } from '@/lib/inventory.server';
+
+const MEDIA_URL = import.meta.env.VITE_MEDIA_URL || '';
 
 export function categoryName(product: PublicProduct) {
   const value = product.expand?.category;
@@ -13,10 +14,10 @@ export function categoryName(product: PublicProduct) {
 
 export function photoUrl(product: PublicProduct) {
   const file = product.photo_file;
-  if (file) return `${pb.baseUrl}/api/files/inventory_products/${product.id}/${file}`;
+  if (file) return `${MEDIA_URL}/api/files/inventory_products/${product.id}/${file}`;
   if (!product.photo) return '';
   if (product.photo.startsWith('http')) return product.photo;
-  return `${pb.baseUrl}/api/files/inventory_products/${product.id}/${product.photo}`;
+  return `${MEDIA_URL}/api/files/inventory_products/${product.id}/${product.photo}`;
 }
 
 function toCartProduct(product: PublicProduct): Product {
