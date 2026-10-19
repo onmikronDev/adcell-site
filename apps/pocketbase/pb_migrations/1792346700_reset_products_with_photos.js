@@ -6,7 +6,7 @@ migrate((app) => {
   for (const record of app.findRecordsByFilter('inventory_products', 'id != ""')) {
     app.delete(record);
   }
-  const byslug = (slug: string) => app.findRecordsByFilter('categories', `slug = '${slug}'`)[0];
+  const byslug = (slug) => app.findRecordsByFilter('categories', `slug = '${slug}'`)[0];
   const capinhas = byslug('capinhas');
   const peliculas = byslug('peliculas');
   const carregadores = byslug('carregadores');
