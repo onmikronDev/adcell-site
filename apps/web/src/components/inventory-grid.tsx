@@ -11,8 +11,8 @@ export function categoryName(product: PublicProduct) {
   return Array.isArray(value) ? value.map(item => item.name).join(', ') : value.name;
 }
 
-function photoUrl(product: PublicProduct) {
-  const file = (product as unknown as { photo_file?: string }).photo_file;
+export function photoUrl(product: PublicProduct) {
+  const file = product.photo_file;
   if (file) return `${pb.baseUrl}/api/files/inventory_products/${product.id}/${file}`;
   if (!product.photo) return '';
   if (product.photo.startsWith('http')) return product.photo;
@@ -30,5 +30,5 @@ function toCartVariant(product: PublicProduct): ProductVariant {
 export function InventoryGrid({ products }: { products: PublicProduct[]; phone?: string }) {
   const { add } = useCart();
   if (!products.length) return <div className="empty-state"><h3>Nenhum acessório compatível ainda.</h3><p>A loja ainda não cadastrou itens para esse filtro. Explore o catálogo completo.</p><Link className="button" to="/catalogo">Ver catálogo</Link></div>;
-  return <div className="product-grid">{products.map(product => <article className="product-card" key={product.id}><div className="product-image">{photoUrl(product) ? <img src={photoUrl(product)} alt={product.title} loading="lazy" /> : <span className="sku-fallback">{product.brand}</span>}{product.stock <= 0 && <span className="product-badge">Esgotado</span>}</div><h3>{product.title}</h3><p className="compat">{product.brand} · {product.model}{product.color ? ` · ${product.color}` : ''}</p><div className="product-price">{money(product.sale_price)}<span>{categoryName(product)}</span></div><button className="button buy-mini" type="button" disabled={product.stock <= 0} onClick={() => add(toCartProduct(product), toCartVariant(product), 1, [])}>{product.stock > 0 ? 'Adicionar ao carrinho' : 'Esgotado'}</button><Link className="text-link" to={`/item/${product.id}`}>Detalhes</Link></article>)}</div>;
+  return <div className="product-grid">{products.map(product => <article className="product-card" key={product.id}><Link className="product-image" to={`/item/${product.id}`} aria-label={`Ver detalhes de ${product.title}`}>{photoUrl(product) ? <img src={photoUrl(product)} alt={product.title} loading="lazy" /> : <span className="sku-fallback">{product.brand}</span>}{product.stock <= 0 && <span className="product-badge">Esgotado</span>}</Link><h3><Link to={`/item/${product.id}`}>{product.title}</Link></h3><p className="compat">{product.brand} · {product.model}{product.color ? ` · ${product.color}` : ''}</p><div className="product-price">{money(product.sale_price)}<span>{categoryName(product)}</span></div><button className="button buy-mini" type="button" disabled={product.stock <= 0} onClick={() => add(toCartProduct(product), toCartVariant(product), 1, [])}>{product.stock > 0 ? 'Adicionar ao carrinho' : 'Esgotado'}</button><Link className="text-link" to={`/item/${product.id}`}>Detalhes</Link></article>)}</div>;
 }
