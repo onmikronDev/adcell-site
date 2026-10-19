@@ -23,9 +23,9 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .form-message a, .detail-price, .product-price, .stat-grid strong { color: var(--lime); }
 .value-strip svg, .product-care svg, .contact-note > svg, .result-icon { color: var(--lime); }
 
-/* Botoes antes vermelhos agora verde-limao, igual ao Consultar O.S. */
-.button-red { background: var(--lime); color: #111; }
-.button-red:hover { background: #98e85a; }
+/* Todos os botoes no mesmo verde de Relatar um problema / Ver compativeis */
+.button, .button-red, .button-lime { background: var(--green); color: #04130a; }
+.button:hover, .button-red:hover, .button-lime:hover { background: #5ad98f; }
 .product-badge { background: var(--lime); color: #04130a; }
 .form-message { color: #ff7a7a; }
 .form-message.success { color: var(--lime); }
