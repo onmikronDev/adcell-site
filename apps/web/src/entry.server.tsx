@@ -2,6 +2,7 @@ import { PassThrough } from 'node:stream';
 import type { AppLoadContext, EntryContext } from 'react-router';
 import { createReadableStreamFromReadable } from '@react-router/node';
 import { ServerRouter } from 'react-router';
+import { renderToPipeableStream } from 'react-dom/server';
 import { isbot } from 'isbot';
 
 export const streamTimeout = 5_000;
