@@ -1,13 +1,13 @@
 /**
  * Camada de dados da loja — MySQL.
  * Mantém o mesmo contrato usado pelas rotas (loadProducts/loadCategories),
- * mas agora lê do banco via ~/api/store.server.
+ * mas agora lê do banco via @/api/store.server.
  */
 import {
   getProducts,
   getCategories,
   type Produto,
-} from "~/api/store.server";
+} from "@/api/store.server";
 
 export type LoadedProduct = {
   id: string;

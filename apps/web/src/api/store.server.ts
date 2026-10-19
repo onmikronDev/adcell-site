@@ -3,7 +3,7 @@
  * Substitui gradualmente a ecommerce-api.ts (Hostinger Store).
  * Preços são sempre em centavos.
  */
-import { query, queryOne, insert, execute } from "~/db.server";
+import { query, queryOne, insert, execute } from "@/db.server";
 
 export type Categoria = {
   id: number;
