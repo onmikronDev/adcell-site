@@ -23,3 +23,13 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .text-link:hover { color: var(--lime); }
 .form-message a, .detail-price, .product-price, .stat-grid strong { color: var(--lime); }
 .value-strip svg, .product-care svg, .contact-note > svg, .result-icon { color: var(--lime); }
+
+/* Neon verde no hover */
+:root { --neon: #39ff14; --neon-glow: 0 0 0 1px #39ff14, 0 0 16px 2px rgba(57,255,20,.55), 0 0 38px rgba(57,255,20,.25); }
+.category-image, .product-image, .value-strip > div, .review-grid blockquote, .os-results li, .admin-list li, .stat-grid div, .contact-note, .cart-summary, .button, .category-chips a, .time-slots button, .gallery-thumbnails button, .wa-float { transition: box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease; }
+.category-tile:hover .category-image, .product-card:hover .product-image { box-shadow: var(--neon-glow); border-color: var(--neon); }
+.value-strip > div:hover, .review-grid blockquote:hover, .os-results li:hover, .admin-list li:hover, .stat-grid div:hover, .contact-note:hover, .cart-summary:hover { box-shadow: var(--neon-glow); border-color: var(--neon); }
+.button:not(.button-red):hover, .category-chips a:hover, .time-slots button:hover, .gallery-thumbnails button:hover { box-shadow: var(--neon-glow); border-color: var(--neon); }
+.wa-float:hover { box-shadow: var(--neon-glow); }
+.desktop-nav a:hover, .cart-link:hover, .footer-top a:hover, .text-link:hover, .admin-shell a:hover { color: var(--neon); text-shadow: 0 0 8px rgba(57,255,20,.85); }
+.header-search:focus-within, .search-field:focus-within, .field input:focus, .field textarea:focus, select:focus { box-shadow: var(--neon-glow); border-color: var(--neon); outline: none; }

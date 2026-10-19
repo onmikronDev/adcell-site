@@ -19,7 +19,9 @@ export default function Login() {
     setBusy(true);
     setError('');
     try {
-      const auth = await login(String(data.get('email')), String(data.get('password')));
+      const raw = String(data.get('email')).trim();
+      const identity = raw.toLowerCase() === 'admin' ? 'admin@adcellcase.com' : raw;
+      const auth = await login(identity, String(data.get('password')));
       if (!isStaff(auth.record.role)) {
         setError('Esta conta não tem acesso ao painel.');
         return;
@@ -31,5 +33,5 @@ export default function Login() {
       setBusy(false);
     }
   }
-  return <main className="section login-page"><img src={LOGO} alt="ADCELL CASE" className="login-logo" /><h1>Painel da loja</h1><form onSubmit={submit} className="login-form"><label className="field">E-mail<input name="email" type="email" required autoComplete="username" /></label><label className="field">Senha<input name="password" type="password" required autoComplete="current-password" /></label><button className="button button-red" disabled={busy}>{busy ? 'Entrando…' : 'Entrar'}</button>{error && <p className="form-message" role="alert">{error}</p>}</form><Link to="/" className="text-link">Voltar ao site</Link></main>;
+  return <main className="section login-page"><img src={LOGO} alt="ADCELL CASE" className="login-logo" /><h1>Painel da loja</h1><form onSubmit={submit} className="login-form"><label className="field">E-mail ou usuário<input name="email" type="text" required autoComplete="username" /></label><label className="field">Senha<input name="password" type="password" required autoComplete="current-password" /></label><button className="button button-red" disabled={busy}>{busy ? 'Entrando…' : 'Entrar'}</button>{error && <p className="form-message" role="alert">{error}</p>}</form><Link to="/" className="text-link">Voltar ao site</Link></main>;
 }
