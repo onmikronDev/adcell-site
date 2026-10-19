@@ -1,0 +1,5 @@
+import { Link } from 'react-router';
+import { ArrowUpRight } from 'lucide-react';
+import type { ProductListItem } from '@/api/ecommerce-api';
+import { ProductGrid } from '@/components/product-grid';
+export function Featured({ products, error }: { products: ProductListItem[]; error: boolean }) { return <section className="section featured"><div className="section-heading"><div><span className="eyebrow">ESCOLHAS PARA O SEU DIA</span><h2>Pequenos detalhes. Mais possibilidades.</h2></div><Link className="text-link" to="/catalogo">Todos os produtos <ArrowUpRight size={17}/></Link></div>{error ? <div className="empty-state"><h3>Não foi possível carregar os produtos.</h3><p>Tente acessar o catálogo novamente em alguns instantes.</p><Link to="/catalogo" className="button">Abrir catálogo</Link></div> : <ProductGrid products={products}/>}</section>; }

@@ -1,0 +1,5 @@
+import { useEffect } from 'react';
+import { Link } from 'react-router';
+import { Check, ShoppingBag } from 'lucide-react';
+import { useCart } from '@/components/cart-provider';
+export function CheckoutResult({ success }: { success: boolean }) { const { loading, clear } = useCart(); useEffect(() => { if (success && !loading) clear(); }, [success, loading, clear]); return <main className="section result-page"><div className="result-icon">{success ? <Check size={40}/> : <ShoppingBag size={40}/>}</div><span className="eyebrow">{success ? 'OBRIGADO POR ESCOLHER A CONECTA' : 'VOCÊ PODE CONTINUAR QUANDO QUISER'}</span><h1>{success ? 'Sua compra foi concluída.' : 'Sua compra não foi finalizada.'}</h1><p>{success ? 'Confira a confirmação e o recibo enviados pela loja ao e-mail informado no checkout.' : 'Nenhum pagamento foi realizado. Seus produtos continuam no carrinho.'}</p><Link className="button" to={success ? '/catalogo' : '/carrinho'}>{success ? 'Voltar ao catálogo' : 'Voltar ao carrinho'}</Link></main>; }

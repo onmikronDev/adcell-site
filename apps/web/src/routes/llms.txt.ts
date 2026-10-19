@@ -1,0 +1,4 @@
+import { getProducts } from '@/api/ecommerce-api';
+import { siteOrigin } from '@/lib/site-origin.server';
+import type { Route } from './+types/llms.txt';
+export async function loader({ request }: Route.LoaderArgs) { const origin = siteOrigin(request); let products = ''; try { const data = await getProducts({ limit: 200, exclude_types: 'subscription' }); products = data.products.filter(p => !p.seo.noindex).map(p => `- [${p.title}](${origin}/produto/${p.url_handle}): ${p.seo.description}`).join('\n'); } catch { /* Public index remains available during catalog outages. */ } return new Response(`# ADCELL CASE\n\nVenda de acessórios e assistência técnica de celulares.\n\n## Páginas\n- [Catálogo](${origin}/catalogo)\n- [Consulta de O.S.](${origin}/os)\n- [Relatar problema](${origin}/relato)\n- [Fale conosco](${origin}/contato)\n\n## Produtos\n${products}\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }); }

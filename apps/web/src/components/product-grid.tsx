@@ -1,0 +1,7 @@
+import { Link } from 'react-router';
+import { ArrowUpRight, PackageOpen } from 'lucide-react';
+import type { ProductListItem } from '@/api/ecommerce-api';
+export function ProductGrid({ products, emptyTitle = 'Novos produtos estão a caminho.' }: { products: ProductListItem[]; emptyTitle?: string }) {
+ if (!products.length) return <div className="empty-state"><PackageOpen size={35} strokeWidth={1.3}/><h3>{emptyTitle}</h3><p>O catálogo está sendo preparado. Em breve, você poderá conferir os produtos, os preços e a disponibilidade.</p><Link className="text-link" to="/contato#mensagem">Tire suas dúvidas com a loja <ArrowUpRight size={16}/></Link></div>;
+ return <div className="product-grid">{products.filter(p => p.url_handle && p.type.value !== 'subscription').map(p => <Link className="product-card" key={p.id} to={`/produto/${p.url_handle}`}><div className="product-image">{p.image ? <img src={p.image} alt={p.title} loading="lazy"/> : <PackageOpen size={45}/>} {p.ribbon_text && <span className="product-badge">{p.ribbon_text}</span>}<span className="round-arrow"><ArrowUpRight size={19}/></span></div><h3>{p.title}</h3><div className="product-price">{p.variants.some(v => v.donation) ? 'Ver opções' : p.price_formatted || 'Consulte as opções'}<span>{p.type.value === 'booking' ? 'Agendar' : p.purchasable ? 'Ver produto' : 'Indisponível'}</span></div></Link>)}</div>;
+}
