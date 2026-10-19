@@ -23,9 +23,9 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .form-message a, .detail-price, .product-price, .stat-grid strong { color: var(--lime); }
 .value-strip svg, .product-care svg, .contact-note > svg, .result-icon { color: var(--lime); }
 
-/* Botoes antes vermelhos agora iguais aos outros verdes */
-.button-red { background: var(--green); color: #04130a; }
-.button-red:hover { background: #5ad98f; }
+/* Botoes antes vermelhos agora verde-limao, igual ao Consultar O.S. */
+.button-red { background: var(--lime); color: #111; }
+.button-red:hover { background: #98e85a; }
 .product-badge { background: var(--lime); color: #04130a; }
 .form-message { color: #ff7a7a; }
 .form-message.success { color: var(--lime); }
