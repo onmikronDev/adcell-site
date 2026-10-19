@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetcher } from 'react-router';
 import type { Route } from './+types/relato';
 import { seo } from '@/lib/seo';
@@ -29,7 +29,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
   try {
     await execute(
-      'INSERT INTO problem_reports (name, whatsapp, email, brand, model, problem, status) VALUES (?, ?, ?, ?, ?, ?, ?novo)',
+      "INSERT INTO problem_reports (name, whatsapp, email, brand, model, problem, status) VALUES (?, ?, ?, ?, ?, ?, 'novo')",
       [payload.name, payload.whatsapp, payload.email, payload.brand, payload.model, payload.problem],
     );
     return { ok: true, payload };
@@ -59,5 +59,3 @@ export default function Report({ loaderData }: Route.ComponentProps) {
 
   return <main className="section"><span className="eyebrow">ASSISTÊNCIA</span><h1>Relate o problema do seu aparelho</h1><p className="page-intro">O chamado fica no painel da loja e também pode ser enviado formatado no WhatsApp.</p><fetcher.Form method="post" className="report-form"><label className="field">Nome completo<input name="name" required minLength={3} maxLength={120} /></label><div className="form-row"><label className="field">WhatsApp<input name="whatsapp" required placeholder="11999999999" /></label><label className="field">E-mail<input name="email" type="email" required /></label></div><div className="form-row"><label className="field">Marca<select name="brand" value={brand} onChange={event => setBrand(event.target.value)}>{PHONE_BRANDS.map(item => <option key={item}>{item}</option>)}</select></label><label className="field">Modelo<select name="model" required>{(PHONE_MODELS[brand] || ['Outro modelo']).map(item => <option key={item}>{item}</option>)}</select></label></div><label className="field">Relate o problema do seu aparelho<textarea name="problem" required minLength={10} rows={5} /></label><button className="button button-red" disabled={fetcher.state !== 'idle'}>{fetcher.state !== 'idle' ? 'Enviando…' : 'Enviar chamado'}</button><p className="form-message" role="status">{status}</p></fetcher.Form></main>;
 }
-
-import { useEffect } from 'react';
