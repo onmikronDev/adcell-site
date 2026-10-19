@@ -39,7 +39,8 @@ export default function ProductsPage() {
   }
   async function save(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = new FormData(form);
     const selected = data.getAll('category').map(String);
     const payload: Record<string, unknown> = { title: data.get('title'), brand: String(data.get('brand') || '').trim(), model: String(data.get('model') || '').trim(), color: data.get('color') || '', sale_price: Math.round(Number(data.get('sale_price')) * 100), cost_price: Math.round(Number(data.get('cost_price') || 0) * 100), sku: String(data.get('sku') || '').trim(), stock: Number(data.get('stock') || 0), min_stock: Number(data.get('min_stock') || 1), film_type: data.get('film_type') || '', description: data.get('description') || '', category: selected, active: true };
     const photoUrl = safeImageUrl(String(data.get('photo') || ''));
@@ -53,7 +54,7 @@ export default function ProductsPage() {
       if (editing) await pb.collection('inventory_products').update(editing.id, payload);
       else await pb.collection('inventory_products').create(payload);
       setEditing(null); setPhotoFile(null); setPhotoPreview('');
-      event.currentTarget.reset();
+      form.reset();
       await load();
     } catch (e) {
       const details = (e as { response?: { data?: unknown } }).response?.data;
