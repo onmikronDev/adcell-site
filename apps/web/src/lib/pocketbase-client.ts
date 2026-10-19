@@ -1,12 +1,17 @@
-import PocketBase from 'pocketbase';
+/**
+ * Stub neutro — o PocketBase foi removido do projeto.
+ * A loja agora usa MySQL via @/api/store.server.
+ * Mantém as exportações para não quebrar imports existentes.
+ */
+export const POCKETBASE_API_URL = '';
 
-// Em producao, deixe vazio para usar o proxy /hcgi/platform.
-// Em desenvolvimento local, crie apps/web/.env com:
-// VITE_POCKETBASE_URL=http://localhost:8090
-const POCKETBASE_API_URL = import.meta.env.VITE_POCKETBASE_URL || '/hcgi/platform';
+const handler = {
+  get() {
+    throw new Error(
+      'PocketBase foi removido. Use a camada MySQL via @/api/store.server.',
+    );
+  },
+};
 
-const pocketbaseClient = new PocketBase(POCKETBASE_API_URL);
-
+export const pocketbaseClient = new Proxy({}, handler);
 export default pocketbaseClient;
-
-export { pocketbaseClient, POCKETBASE_API_URL };
