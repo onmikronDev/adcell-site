@@ -7,6 +7,7 @@ export type PublicProduct = {
   model: string;
   color: string;
   photo: string;
+  photo_file: string;
   sale_price: number;
   sku: string;
   stock: number;
@@ -29,8 +30,8 @@ export type StoreSettings = {
 export type PublicTestimonial = { id: string; name: string; text: string; rating: number };
 
 const strip = (row: PublicProduct): PublicProduct => {
-  const { id, title, brand, model, color, photo, sale_price, sku, stock, film_type, description, category, expand } = row;
-  return { id, title, brand, model, color: color || '', photo: photo || '', sale_price: sale_price || 0, sku, stock: stock || 0, film_type: film_type || '', description: description || '', category: Array.isArray(category) ? category : category ? [category] : [], expand };
+  const { id, title, brand, model, color, photo, photo_file, sale_price, sku, stock, film_type, description, category, expand } = row;
+  return { id, title, brand, model, color: color || '', photo: photo || '', photo_file: photo_file || '', sale_price: sale_price || 0, sku, stock: stock || 0, film_type: film_type || '', description: description || '', category: Array.isArray(category) ? category : category ? [category] : [], expand };
 };
 
 export async function loadCatalog(brand = '', model = '') {
