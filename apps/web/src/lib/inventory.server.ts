@@ -1,4 +1,8 @@
-import { pocketbaseAdmin } from '@/lib/pocketbase-client.server';
+/**
+ * Inventário, configurações da loja e depoimentos — MySQL.
+ * Substitui o PocketBase; mantém os mesmos tipos e funções.
+ */
+import { query, queryOne } from "@/db.server";
 
 export type PublicProduct = {
   id: string;
@@ -14,10 +18,21 @@ export type PublicProduct = {
   film_type: string;
   description: string;
   category: string[];
-  expand?: { category?: { id: string; name: string; kind: string } | { id: string; name: string; kind: string }[] };
+  expand?: {
+    category?:
+      | { id: string; name: string; kind: string }
+      | { id: string; name: string; kind: string }[];
+  };
 };
 
-export type PublicCategory = { id: string; name: string; slug: string; kind: string; active: boolean };
+export type PublicCategory = {
+  id: string;
+  name: string;
+  slug: string;
+  kind: string;
+  active: boolean;
+};
+
 export type StoreSettings = {
   id: string;
   whatsapp: string;
@@ -27,37 +42,121 @@ export type StoreSettings = {
   maps_url: string;
   hours: string;
 };
-export type PublicTestimonial = { id: string; name: string; text: string; rating: number };
 
-const strip = (row: PublicProduct): PublicProduct => {
-  const { id, title, brand, model, color, photo, photo_file, sale_price, sku, stock, film_type, description, category, expand } = row;
-  return { id, title, brand, model, color: color || '', photo: photo || '', photo_file: photo_file || '', sale_price: sale_price || 0, sku, stock: stock || 0, film_type: film_type || '', description: description || '', category: Array.isArray(category) ? category : category ? [category] : [], expand };
+export type PublicTestimonial = {
+  id: string;
+  name: string;
+  text: string;
+  rating: number;
 };
 
-export async function loadCatalog(brand = '', model = '') {
+const EMPTY_SETTINGS: StoreSettings = {
+  id: "",
+  whatsapp: "",
+  instagram: "",
+  facebook: "",
+  address: "",
+  maps_url: "",
+  hours: "",
+};
+
+export async function loadCatalog(brand = "", model = "") {
   try {
-    const filter = ['active = true', brand && `brand = '${brand.replaceAll("'", '')}'`, model && `model = '${model.replaceAll("'", '')}'`].filter(Boolean).join(' && ');
-    const data = await pocketbaseAdmin.listRecords<PublicProduct>('inventory_products', { page: 1, perPage: 200, filter, sort: 'title', expand: 'category' });
-    const categories = await pocketbaseAdmin.listRecords<PublicCategory>('categories', { page: 1, perPage: 100, filter: 'active = true', sort: 'name' });
-    return { products: data.items.map(strip), categories: categories.items, error: false };
+    const params: unknown[] = [];
+    let sql = `
+      SELECT p.*, c.id AS cat_id, c.name AS cat_name, c.kind AS cat_kind
+      FROM inventory_products p
+      LEFT JOIN inventory_categories c ON c.id = p.category_id
+      WHERE p.active = 1
+    `;
+    if (brand) {
+      sql += " AND p.brand = ?";
+      params.push(brand);
+    }
+    if (model) {
+      sql += " AND p.model = ?";
+      params.push(model);
+    }
+    sql += " ORDER BY p.title ASC LIMIT 200";
+
+    const rows = await query<any>(sql, params);
+    const products: PublicProduct[] = rows.map((row) => ({
+      id: String(row.id),
+      title: row.title,
+      brand: row.brand ?? "",
+      model: row.model ?? "",
+      color: row.color ?? "",
+      photo: row.photo ?? "",
+      photo_file: row.photo_file ?? "",
+      sale_price: row.sale_price ?? 0,
+      sku: row.sku ?? "",
+      stock: row.stock ?? 0,
+      film_type: row.film_type ?? "",
+      description: row.description ?? "",
+      category: row.cat_id ? [String(row.cat_id)] : [],
+      expand: row.cat_id
+        ? {
+            category: {
+              id: String(row.cat_id),
+              name: row.cat_name,
+              kind: row.cat_kind ?? "",
+            },
+          }
+        : undefined,
+    }));
+
+    const categories = await query<any>(
+      "SELECT id, name, slug, kind, active FROM inventory_categories WHERE active = 1 ORDER BY name ASC LIMIT 100",
+    );
+    const mappedCategories: PublicCategory[] = categories.map((c) => ({
+      id: String(c.id),
+      name: c.name,
+      slug: c.slug,
+      kind: c.kind ?? "",
+      active: !!c.active,
+    }));
+
+    return { products, categories: mappedCategories, error: false };
   } catch {
-    return { products: [] as PublicProduct[], categories: [] as PublicCategory[], error: true };
+    return {
+      products: [] as PublicProduct[],
+      categories: [] as PublicCategory[],
+      error: true,
+    };
   }
 }
 
 export async function loadSettings(): Promise<StoreSettings> {
   try {
-    const data = await pocketbaseAdmin.listRecords<StoreSettings>('store_settings', { page: 1, perPage: 1 });
-    return data.items[0] || { id: '', whatsapp: '', instagram: '', facebook: '', address: '', maps_url: '', hours: '' };
+    const row = await queryOne<any>(
+      "SELECT id, whatsapp, instagram, facebook, address, maps_url, hours FROM store_settings ORDER BY id ASC LIMIT 1",
+    );
+    if (!row) return EMPTY_SETTINGS;
+    return {
+      id: String(row.id),
+      whatsapp: row.whatsapp ?? "",
+      instagram: row.instagram ?? "",
+      facebook: row.facebook ?? "",
+      address: row.address ?? "",
+      maps_url: row.maps_url ?? "",
+      hours: row.hours ?? "",
+    };
   } catch {
-    return { id: '', whatsapp: '', instagram: '', facebook: '', address: '', maps_url: '', hours: '' };
+    return EMPTY_SETTINGS;
   }
 }
 
-export async function loadTestimonials() {
+export async function loadTestimonials(): Promise<PublicTestimonial[]> {
   try {
-    const data = await pocketbaseAdmin.listRecords<PublicTestimonial>('testimonials', { page: 1, perPage: 12, filter: 'published = true', sort: '-created' });
-    return data.items;
+    const rows = await query<any>(
+      "SELECT id, name, text, rating FROM testimonials WHERE published = 1 ORDER BY created DESC LIMIT 12",
+    );
+    return rows.map((t) => ({
+      id: String(t.id),
+      name: t.name,
+      text: t.text,
+      rating: t.rating ?? 5,
+    }));
   } catch {
     return [];
   }
