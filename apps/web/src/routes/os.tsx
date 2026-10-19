@@ -1,25 +1,39 @@
 import { useFetcher } from 'react-router';
 import type { Route } from './+types/os';
 import { seo } from '@/lib/seo';
-import { pocketbaseAdmin } from '@/lib/pocketbase-client.server';
-import { OS_STATUS } from '@/data/brand';
-import { LOGO } from '@/data/brand';
+import { OS_STATUS, LOGO } from '@/data/brand';
+import { query } from '@/db.server';
+
 export function meta({ matches, location }: Route.MetaArgs) {
   return seo({ matches, location }, { title: 'Consulta de ordem de serviço — ADCELL CASE', description: 'Consulte o status do conserto pelo número da O.S. ou pelo CPF.', image: LOGO, jsonLd: { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Consulta de O.S. ADCELL CASE' } });
 }
+
 export async function action({ request }: Route.ActionArgs) {
   const form = await request.formData();
   const raw = String(form.get('q') || '').trim().slice(0, 40);
   const digits = raw.replace(/\D/g, '');
   if (raw.length < 3) return { found: false, message: 'Informe o número da O.S. ou o CPF.' };
   try {
-    const filter = digits.length >= 11 ? `cpf = '${digits}' || os_number = '${raw.replaceAll("'", '')}'` : `os_number = '${raw.replaceAll("'", '')}'`;
-    const data = await pocketbaseAdmin.listRecords<{ os_number: string; status: keyof typeof OS_STATUS; brand: string; model: string; public_note: string; updated: string }>('service_orders', { filter, perPage: 5, sort: '-updated' });
-    return { found: data.items.length > 0, items: data.items.map(item => ({ os: item.os_number, status: OS_STATUS[item.status] || item.status, device: `${item.brand} ${item.model}`, note: item.public_note || '' })) };
+    const rows = await query<any>(
+      digits.length >= 11
+        ? 'SELECT os_number, status, brand, model, public_note, updated FROM service_orders WHERE cpf = ? OR os_number = ? ORDER BY updated DESC LIMIT 5'
+        : 'SELECT os_number, status, brand, model, public_note, updated FROM service_orders WHERE os_number = ? ORDER BY updated DESC LIMIT 5',
+      digits.length >= 11 ? [digits, raw] : [raw],
+    );
+    return {
+      found: rows.length > 0,
+      items: rows.map((item) => ({
+        os: item.os_number,
+        status: OS_STATUS[item.status as keyof typeof OS_STATUS] || item.status,
+        device: `${item.brand ?? ''} ${item.model ?? ''}`.trim(),
+        note: item.public_note || '',
+      })),
+    };
   } catch {
     return { found: false, message: 'Não foi possível consultar agora. Tente de novo.' };
   }
 }
+
 export default function OsLookup() {
   const fetcher = useFetcher<typeof action>();
   const result = fetcher.data;
