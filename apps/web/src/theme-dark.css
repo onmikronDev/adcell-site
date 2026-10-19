@@ -103,11 +103,18 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .admin-list li button:only-child { width: 100%; text-align: left; color: var(--ink); border: 0; padding: 4px 0; font-size: 15px; font-weight: 500; }
 .login-form { background: var(--bg-card); border: 1px solid var(--line); border-radius: 10px; padding: 22px; }
 
+/* Botoes flutuantes */
+.float-actions { position: fixed; right: 16px; bottom: 16px; z-index: 40; display: grid; gap: 10px; justify-items: end; }
+.cart-float { position: static; background: var(--bg-card); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; min-height: 48px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; box-shadow: 0 8px 24px #0006; }
+.cart-float:hover { border-color: var(--lime); color: var(--lime); }
+.cart-float-count { background: var(--lime); color: #04130a; border-radius: 999px; min-width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px; padding: 0 6px; }
+.wa-float { position: static; background: #1faa4b; color: white; border-radius: 999px; min-height: 48px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; font-weight: 800; box-shadow: 0 8px 24px #0006; }
+
 /* Neon mais discreto: so cards e botoes principais */
 :root { --neon: #39ff14; --neon-glow: 0 0 0 1px #39ff14, 0 0 14px 2px rgba(57,255,20,.45), 0 0 30px rgba(57,255,20,.18); }
-.category-image, .product-image, .value-strip > div, .review-grid blockquote, .os-results li, .admin-list li, .stat-grid div, .contact-note, .cart-summary, .button, .category-chips a, .time-slots button, .gallery-thumbnails button, .wa-float { transition: box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease; }
+.category-image, .product-image, .value-strip > div, .review-grid blockquote, .os-results li, .admin-list li, .stat-grid div, .contact-note, .cart-summary, .button, .category-chips a, .time-slots button, .gallery-thumbnails button, .cart-float, .wa-float { transition: box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease; }
 .category-tile:hover .category-image, .product-card:hover .product-image { box-shadow: var(--neon-glow); border-color: var(--neon); }
-.button:hover, .category-chips a:hover, .time-slots button:hover, .gallery-thumbnails button:hover { box-shadow: var(--neon-glow); border-color: var(--neon); }
+.button:hover, .category-chips a:hover, .time-slots button:hover, .gallery-thumbnails button:hover, .cart-float:hover { box-shadow: var(--neon-glow); border-color: var(--neon); }
 .wa-float:hover { box-shadow: var(--neon-glow); }
 .desktop-nav a:hover, .cart-link:hover, .footer-top a:hover, .text-link:hover, .admin-shell a:hover { color: var(--neon); }
 .header-search:focus-within, .search-field:focus-within, .field input:focus, .field textarea:focus, select:focus, .inline-form input:focus, .admin-form input:focus, .admin-form textarea:focus, .login-form input:focus { box-shadow: var(--neon-glow); border-color: var(--neon); outline: none; }
