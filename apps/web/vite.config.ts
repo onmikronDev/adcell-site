@@ -40,6 +40,14 @@ export default defineConfig({
 	server: {
 		port: 3000,
 		host: '::',
+		proxy: {
+			// Local dev: o navegador chama /hcgi/platform/api/..., repassamos ao PocketBase (porta 8090).
+			'/hcgi/platform': {
+				target: process.env.POCKETBASE_URL || 'http://localhost:8090',
+				changeOrigin: true,
+				rewrite: (p: string) => p.replace(/^\/hcgi\/platform/, ''),
+			},
+		},
 		cors: { origin: AllowedEditorOrigins },
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',
