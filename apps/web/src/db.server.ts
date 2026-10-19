@@ -36,12 +36,25 @@ if (process.env.NODE_ENV !== "production") {
   global.__mysqlPool = pool;
 }
 
+function friendlyError(error: unknown): never {
+  if (error instanceof AggregateError) {
+    throw new Error(
+      "Falha na conexão MySQL: verifique se o MySQL está rodando e se DB_HOST, DB_USER, DB_PASSWORD e DB_NAME estão corretos no .env. Se DB_HOST for 'localhost', tente '127.0.0.1'.",
+    );
+  }
+  throw error;
+}
+
 export async function query<T = any>(
   sql: string,
   params: unknown[] = [],
 ): Promise<T[]> {
-  const [rows] = await pool.query(sql, params);
-  return rows as T[];
+  try {
+    const [rows] = await pool.query(sql, params);
+    return rows as T[];
+  } catch (error) {
+    friendlyError(error);
+  }
 }
 
 export async function queryOne<T = any>(
@@ -53,14 +66,22 @@ export async function queryOne<T = any>(
 }
 
 export async function insert(sql: string, params: unknown[] = []) {
-  const [result] = await pool.query(sql, params);
-  const { insertId } = result as mysql.ResultSetHeader;
-  return insertId;
+  try {
+    const [result] = await pool.query(sql, params);
+    const { insertId } = result as mysql.ResultSetHeader;
+    return insertId;
+  } catch (error) {
+    friendlyError(error);
+  }
 }
 
 export async function execute(sql: string, params: unknown[] = []) {
-  const [result] = await pool.query(sql, params);
-  return result as mysql.ResultSetHeader;
+  try {
+    const [result] = await pool.query(sql, params);
+    return result as mysql.ResultSetHeader;
+  } catch (error) {
+    friendlyError(error);
+  }
 }
 
 export async function checkConnection() {
