@@ -1,7 +1,7 @@
 /* Tema escuro verde */
 :root { --green: #34c26f; --lime: #7ed321; --ink: #eaf3ec; --soft: #10261a; --grey: #a9bbad; --line: #21412f; --bg-dark: #07140d; --bg-card: #0d2016; }
 html, body { background: var(--bg-dark); color: var(--ink); }
-body { background: radial-gradient(1200px 600px at 80% -10%, #0f3a24 0%, transparent 60%), var(--bg-dark); }
+body { background: radial-gradient(1200px 600px at 80% -10%, #0f3a24 0%, transparent 60%), var(--bg-dark); font-size: 16px; }
 .section h1, .section h2, .product-info h1 { color: var(--ink); }
 .eyebrow { color: var(--lime); }
 .hero { background: #0b2418; }
@@ -23,7 +23,7 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .form-message a, .detail-price, .product-price, .stat-grid strong { color: var(--lime); }
 .value-strip svg, .product-care svg, .contact-note > svg, .result-icon { color: var(--lime); }
 
-/* Todos os botoes no mesmo verde de Relatar um problema / Ver compativeis */
+/* Todos os botoes no mesmo verde */
 .button, .button-red, .button-lime { background: var(--green); color: #04130a; }
 .button:hover, .button-red:hover, .button-lime:hover { background: #5ad98f; }
 .product-badge { background: var(--lime); color: #04130a; }
@@ -31,9 +31,59 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .form-message.success { color: var(--lime); }
 .stat-grid .alert, .low-stock { color: #ff7a7a; }
 
+/* Fontes maiores e mais legiveis */
+.announcement { font-size: 12px; }
+.desktop-nav { font-size: 14px; }
+.header-search input { font-size: 14px; }
+.cart-link { font-size: 14px; }
+.cart-count { font-size: 12px; }
+.hero p { font-size: 16px; }
+.hero-secondary { font-size: 13px; }
+.hero-exhibit { font-size: 11px; }
+.hero-image-note { font-size: 11px; }
+.value-strip strong { font-size: 14px; }
+.value-strip small { font-size: 13px; }
+.text-link { font-size: 14px; }
+.category-tile h3 { font-size: 16px; }
+.category-tile p { font-size: 13px; }
+.image-note { font-size: 13px; }
+.empty-state p { font-size: 14px; }
+.store-story p { font-size: 15px; }
+.graphic-label { font-size: 11px; }
+.footer-top p { font-size: 14px; }
+.footer-top h3 { font-size: 14px; }
+.footer-top a:not(.brand) { font-size: 13px; }
+.footer-bottom { font-size: 12px; }
+.breadcrumb { font-size: 13px; }
+.page-intro { font-size: 15px; }
+.catalog-count { font-size: 13px; }
+.category-chips a, .time-slots button { font-size: 13px; }
+.product-card h3 { font-size: 15px; }
+.product-price { font-size: 16px; }
+.product-price span { font-size: 13px; }
+.product-badge { font-size: 12px; }
+.product-description { font-size: 15px; }
+.field { font-size: 14px; }
+.field input, .field textarea { font-size: 14px; }
+.product-care p { font-size: 14px; }
+.product-info details { font-size: 14px; }
+.cart-item h3 { font-size: 15px; }
+.cart-item p { font-size: 14px; }
+.cart-summary p { font-size: 13px; }
+.secure-label { font-size: 12px; }
+.notice { font-size: 14px; }
+.result-page p { font-size: 15px; }
+.contact-layout section > p { font-size: 14px; }
+.consent { font-size: 13px; }
+.contact-note p { font-size: 14px; }
+.contact-note details { font-size: 14px; }
+.faq-list p, .review-grid p { font-size: 14px; }
+.compat, .sku-fallback { font-size: 14px; }
+.admin-shell a { font-size: 14px; }
+
 /* Painel: campos, formularios e listas */
 ::placeholder { color: #6f8a78; opacity: 1; }
-.inline-form input, .admin-form input:not([type='checkbox']), .admin-form textarea, .admin-form select, .login-form input, .inline-form select { background: var(--bg-card); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; font-size: 13px; min-height: 44px; outline: none; width: 100%; box-sizing: border-box; }
+.inline-form input, .admin-form input:not([type='checkbox']), .admin-form textarea, .admin-form select, .login-form input, .inline-form select { background: var(--bg-card); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; font-size: 15px; min-height: 46px; outline: none; width: 100%; box-sizing: border-box; }
 .inline-form input, .inline-form select { width: auto; flex: 1 1 220px; }
 .inline-form .button, .admin-form .button { flex: 0 0 auto; width: auto; }
 .admin-form { background: var(--bg-card); border: 1px solid var(--line); border-radius: 10px; padding: 22px; margin: 22px 0; }
@@ -41,24 +91,23 @@ select, .search-field, .field input, .field textarea, .field select, .category-c
 .admin-form .field { margin: 14px 0; color: var(--ink); }
 .admin-form textarea { resize: vertical; }
 .checklist { border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
-.checklist legend { color: var(--lime); font-size: 12px; font-weight: 700; padding: 0 8px; }
-.checklist label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); }
+.checklist legend { color: var(--lime); font-size: 13px; font-weight: 700; padding: 0 8px; }
+.checklist label { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink); }
 .checklist input, .consent input { accent-color: #39ff14; }
 .admin-main h1 { font-size: 28px; color: var(--ink); margin-bottom: 18px; }
 .admin-list li { background: var(--bg-card); border-color: var(--line); color: var(--ink); }
-.admin-list li span { color: var(--grey); font-size: 12px; }
-.admin-list li p { color: var(--grey); font-size: 13px; margin-top: 6px; }
-.admin-list li button { background: transparent; color: var(--lime); border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; font-size: 12px; font-weight: 700; }
+.admin-list li span { color: var(--grey); font-size: 13px; }
+.admin-list li p { color: var(--grey); font-size: 14px; margin-top: 6px; }
+.admin-list li button { background: transparent; color: var(--lime); border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 700; }
 .admin-list li button:hover { border-color: #39ff14; color: #39ff14; }
-.admin-list li button:only-child { width: 100%; text-align: left; color: var(--ink); border: 0; padding: 4px 0; font-size: 14px; font-weight: 500; }
+.admin-list li button:only-child { width: 100%; text-align: left; color: var(--ink); border: 0; padding: 4px 0; font-size: 15px; font-weight: 500; }
 .login-form { background: var(--bg-card); border: 1px solid var(--line); border-radius: 10px; padding: 22px; }
 
-/* Neon verde no hover */
-:root { --neon: #39ff14; --neon-glow: 0 0 0 1px #39ff14, 0 0 16px 2px rgba(57,255,20,.55), 0 0 38px rgba(57,255,20,.25); }
+/* Neon mais discreto: so cards e botoes principais */
+:root { --neon: #39ff14; --neon-glow: 0 0 0 1px #39ff14, 0 0 14px 2px rgba(57,255,20,.45), 0 0 30px rgba(57,255,20,.18); }
 .category-image, .product-image, .value-strip > div, .review-grid blockquote, .os-results li, .admin-list li, .stat-grid div, .contact-note, .cart-summary, .button, .category-chips a, .time-slots button, .gallery-thumbnails button, .wa-float { transition: box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease; }
 .category-tile:hover .category-image, .product-card:hover .product-image { box-shadow: var(--neon-glow); border-color: var(--neon); }
-.value-strip > div:hover, .review-grid blockquote:hover, .os-results li:hover, .admin-list li:hover, .stat-grid div:hover, .contact-note:hover, .cart-summary:hover { box-shadow: var(--neon-glow); border-color: var(--neon); }
 .button:hover, .category-chips a:hover, .time-slots button:hover, .gallery-thumbnails button:hover { box-shadow: var(--neon-glow); border-color: var(--neon); }
 .wa-float:hover { box-shadow: var(--neon-glow); }
-.desktop-nav a:hover, .cart-link:hover, .footer-top a:hover, .text-link:hover, .admin-shell a:hover { color: var(--neon); text-shadow: 0 0 8px rgba(57,255,20,.85); }
+.desktop-nav a:hover, .cart-link:hover, .footer-top a:hover, .text-link:hover, .admin-shell a:hover { color: var(--neon); }
 .header-search:focus-within, .search-field:focus-within, .field input:focus, .field textarea:focus, select:focus, .inline-form input:focus, .admin-form input:focus, .admin-form textarea:focus, .login-form input:focus { box-shadow: var(--neon-glow); border-color: var(--neon); outline: none; }

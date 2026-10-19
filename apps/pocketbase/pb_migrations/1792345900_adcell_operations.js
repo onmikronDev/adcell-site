@@ -295,8 +295,8 @@ migrate(
       });
       app.save(settings);
       const row = new Record(settings);
-      row.set('whatsapp', '5500000000000');
-      row.set('address', 'Informe o endereço da loja no painel');
+      row.set('whatsapp', '5511999999999');
+      row.set('address', 'São Paulo, SP');
       row.set('hours', 'Seg a sex 9h–18h · Sáb 9h–13h');
       row.set('maps_url', 'https://maps.google.com');
       app.save(row);
