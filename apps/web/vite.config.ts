@@ -5,13 +5,11 @@ import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig, type Plugin } from 'vite';
 import { AllowedEditorOrigins } from './plugins/horizons-runtime/editor-origins.js';
 import horizonsRuntimePlugin from './plugins/horizons-runtime/vite-plugin-horizons-runtime.js';
-import sessionJournalPlugin from './plugins/session-journal/vite-plugin-session-journal.js';
 import editModeDevPlugin from './plugins/visual-editor/vite-plugin-edit-mode.js';
 import inlineEditPlugin from './plugins/visual-editor/vite-plugin-react-inline-editor.js';
 import devHeadersPlugin from './plugins/vite-plugin-dev-headers.js';
 import horizonsLoggerPlugin from './plugins/vite-plugin-horizons-logger.js';
 import iframeRouteRestorationPlugin from './plugins/vite-plugin-iframe-route-restoration.js';
-import pocketbaseAuthPlugin from './plugins/vite-plugin-pocketbase-auth.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '../..');
@@ -30,7 +28,6 @@ const domainCheckoutDevPlugin: Plugin = {
 			if ((url.pathname === '/checkout' || url.pathname === '/checkout/') && fs.existsSync(shellFile)) {
 				req.url = `/checkout/index.html${url.search}`;
 			}
-
 			next();
 		});
 	},
@@ -40,14 +37,6 @@ export default defineConfig({
 	server: {
 		port: 3000,
 		host: '::',
-		proxy: {
-			// Local dev: o navegador chama /hcgi/platform/api/..., repassamos ao PocketBase (porta 8090).
-			'/hcgi/platform': {
-				target: process.env.POCKETBASE_URL || 'http://localhost:8090',
-				changeOrigin: true,
-				rewrite: (p: string) => p.replace(/^\/hcgi\/platform/, ''),
-			},
-		},
 		cors: { origin: AllowedEditorOrigins },
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',
@@ -76,7 +65,6 @@ export default defineConfig({
 				inlineEditPlugin(),
 				editModeDevPlugin(),
 				iframeRouteRestorationPlugin(),
-				pocketbaseAuthPlugin(),
 				sessionJournalPlugin(),
 			]
 			: []),

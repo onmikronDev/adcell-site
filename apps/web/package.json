@@ -53,7 +53,6 @@
     "lucide-react": "^0.469.0",
     "mysql2": "^3.11.5",
     "next-themes": "^0.4.6",
-    "pocketbase": "^0.28.1",
     "rate-limiter-flexible": "^11.2.0",
     "react": "^19.2.7",
     "react-day-picker": "^9.14.0",
