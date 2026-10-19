@@ -37,7 +37,7 @@ CREATE INDEX idx_produtos_categoria ON produtos (categoria_id);
 CREATE INDEX idx_produtos_ativo ON produtos (ativo);
 CREATE INDEX idx_produtos_destaque ON produtos (destaque);
 
--- Catálogo por marca/modelo (usado por inventory.server.ts)
+-- Catálogo por marca/modelo
 CREATE TABLE IF NOT EXISTS inventory_categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -70,7 +70,7 @@ CREATE INDEX idx_inventory_products_brand ON inventory_products (brand);
 CREATE INDEX idx_inventory_products_model ON inventory_products (model);
 CREATE INDEX idx_inventory_products_active ON inventory_products (active);
 
--- Configurações da loja (WhatsApp, redes, endereço)
+-- Configurações da loja
 CREATE TABLE IF NOT EXISTS store_settings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   whatsapp VARCHAR(50) NOT NULL DEFAULT '',
@@ -91,21 +91,73 @@ CREATE TABLE IF NOT EXISTS testimonials (
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Ordens de serviço (consulta pública)
-CREATE TABLE IF NOT EXISTS service_orders (
+-- Ordens de serviço (recriada com todas as colunas)
+DROP TABLE IF EXISTS os_events;
+DROP TABLE IF EXISTS service_orders;
+CREATE TABLE service_orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   os_number VARCHAR(50) NOT NULL UNIQUE,
+  customer_name VARCHAR(255) NOT NULL,
   cpf VARCHAR(20) NULL,
-  status VARCHAR(50) NOT NULL DEFAULT 'recebido',
+  whatsapp VARCHAR(50) NOT NULL DEFAULT '',
+  email VARCHAR(255) NULL,
   brand VARCHAR(255) NOT NULL DEFAULT '',
   model VARCHAR(255) NOT NULL DEFAULT '',
+  imei VARCHAR(100) NULL,
+  problem TEXT NULL,
+  checklist JSON NULL,
+  status VARCHAR(50) NOT NULL DEFAULT 'recebido',
+  technician VARCHAR(255) NULL,
   public_note TEXT NULL,
   updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE INDEX idx_service_orders_cpf ON service_orders (cpf);
 
--- Chamados de assistência (formulário público)
+CREATE TABLE IF NOT EXISTS technicians (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS os_events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  status VARCHAR(50) NOT NULL DEFAULT '',
+  note TEXT NULL,
+  parts VARCHAR(500) NULL,
+  author VARCHAR(255) NOT NULL DEFAULT '',
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_os_events_order
+    FOREIGN KEY (order_id) REFERENCES service_orders(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- PDV
+CREATE TABLE IF NOT EXISTS counter_sales (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  payment VARCHAR(50) NOT NULL DEFAULT '',
+  total INT NOT NULL DEFAULT 0,
+  cost_total INT NOT NULL DEFAULT 0,
+  note VARCHAR(255) NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS sale_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sale_id INT NOT NULL,
+  product_id INT NULL,
+  title VARCHAR(255) NOT NULL,
+  category_name VARCHAR(255) NOT NULL DEFAULT '',
+  quantity INT NOT NULL DEFAULT 1,
+  unit_price INT NOT NULL DEFAULT 0,
+  unit_cost INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_sale_items_sale
+    FOREIGN KEY (sale_id) REFERENCES counter_sales(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Chamados de assistência
 CREATE TABLE IF NOT EXISTS problem_reports (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
