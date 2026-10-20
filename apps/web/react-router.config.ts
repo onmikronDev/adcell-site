@@ -4,4 +4,5 @@ export default {
 	appDirectory: 'src',
 	buildDirectory: 'build',
 	ssr: false,
+	prerender: false,
 } satisfies Config;
