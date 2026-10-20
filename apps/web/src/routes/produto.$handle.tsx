@@ -1,7 +1,24 @@
+import { useEffect, useState } from 'react';
 import type { Route } from './+types/produto.$handle';
-import { getProductByHandle, EcommerceApiError, toPriceUnits } from '@/api/ecommerce-api';
-import { seo, absoluteUrl, siteOriginFrom } from '@/lib/seo';
+import { getProductByHandle } from '@/api/ecommerce-api';
+import { seo } from '@/lib/seo';
 import { ProductDetails } from '@/components/product/product-details';
-export async function loader({ params }: Route.LoaderArgs) { try { const product = await getProductByHandle(params.handle); if (product.type.value === 'subscription') throw new Response('Produto não encontrado', { status: 404 }); return { product }; } catch (error) { if (error instanceof EcommerceApiError && error.status === 404) throw new Response('Produto não encontrado', { status: 404 }); throw error; } }
-export function meta({ matches, location, loaderData }: Route.MetaArgs) { if (!loaderData) return seo({ matches, location }, { title: 'Produto não encontrado — Conecta', description: 'Este produto não está disponível no catálogo.', noindex: true }); const p = loaderData.product; return seo({ matches, location }, { title: p.seo.title, description: p.seo.description, image: p.seo.image, noindex: p.seo.noindex, jsonLd: { '@context': 'https://schema.org', '@type': 'Product', name: p.title, description: p.seo.description, ...(p.images.length ? { image: p.images.map(i => i.url) } : p.image ? { image: p.image } : {}), offers: { '@type': 'Offer', url: absoluteUrl(siteOriginFrom(matches), location.pathname), price: toPriceUnits(p.price_in_cents,p.currency_info), priceCurrency: p.currency.toUpperCase(), availability: p.purchasable ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' } } }); }
-export default function ProductPage({ loaderData }: Route.ComponentProps) { return <ProductDetails key={loaderData.product.id} product={loaderData.product}/>; }
+
+export function meta({ matches, location }: Route.MetaArgs) {
+  return seo({ matches, location }, { title: 'Produto — Conecta', description: 'Detalhes do produto.', noindex: true });
+}
+
+export default function ProductPage({ params }: Route.ComponentProps) {
+  const [product, setProduct] = useState<any>(null);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    getProductByHandle(params.handle)
+      .then(setProduct)
+      .catch(() => setNotFound(true));
+  }, [params.handle]);
+
+  if (notFound) return <main className="section"><h1>Produto não encontrado</h1></main>;
+  if (!product) return <main className="section"><p>Carregando…</p></main>;
+  return <ProductDetails key={product.id} product={product} />;
+}
